@@ -1,19 +1,17 @@
 package ru.practicum.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Data
-@Entity
-@Table(name = "stats")
-@Builder
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
+@Entity
+@Table(name = "stats")
 public class StatsModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,5 +28,4 @@ public class StatsModel {
     //Дата и время, когда был совершен запрос к эндпоинту
     @Column
     private LocalDateTime timestamp;
-
 }
