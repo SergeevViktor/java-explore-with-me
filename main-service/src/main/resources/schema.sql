@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS events (
 	published_on TIMESTAMP,
 	category_id BIGINT NOT NULL REFERENCES categories (id),
 	location_id BIGINT NOT NULL REFERENCES locations (id),
-	initiator_id BIGINT NOT NULL REFERENCES users (id),
+	initiator_id BIGINT NOT NULL REFERENCES users (id)
 );
 
 CREATE TABLE IF NOT EXISTS participation_requests (
