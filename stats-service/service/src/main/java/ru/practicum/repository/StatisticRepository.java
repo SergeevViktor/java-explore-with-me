@@ -3,12 +3,14 @@ package ru.practicum.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import ru.practicum.model.StatsModel;
 import ru.practicum.model.ViewStats;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Repository
 public interface StatisticRepository extends JpaRepository<StatsModel, Long> {
     @Query("select new ru.practicum.model.ViewStats(e.app, e.uri, count(e.ip)) " +
             "from StatsModel e " +
@@ -21,15 +23,14 @@ public interface StatisticRepository extends JpaRepository<StatsModel, Long> {
             @Param("end") LocalDateTime end
     );
 
-    @Query("select new ru.practicum.model.ViewStats(e.app, e.uri, count(distinct e.ip)) " +
-            "from StatsModel e " +
-            "where e.timestamp between :start and :end " +
-            "group by e.app, e.uri " +
-            "order by count(e.ip) desc"
+    @Query(value = "SELECT new ru.practicum.model.ViewStats(h.app, h.uri, COUNT(DISTINCT h.ip)) " +
+            "FROM StatsModel AS h " +
+            "WHERE h.timestamp BETWEEN :start AND :end " +
+            "GROUP BY h.app, h.uri " +
+            "ORDER BY COUNT(DISTINCT h.ip) DESC"
     )
-    List<ViewStats> findAllByDateBetweenUnique(
-            @Param("start") LocalDateTime start,
-            @Param("end") LocalDateTime end
+    List<ViewStats> findAllStatsByUniqIp(@Param("start") LocalDateTime start,
+                                         @Param("end") LocalDateTime end
     );
 
     @Query("select new ru.practicum.model.ViewStats(e.app, e.uri, count(e.ip)) " +
@@ -45,17 +46,17 @@ public interface StatisticRepository extends JpaRepository<StatsModel, Long> {
             @Param("uris") List<String> uri
     );
 
-    @Query("select new ru.practicum.model.ViewStats(e.app, e.uri, count(distinct e.ip)) " +
-            "from StatsModel e " +
-            "where e.timestamp between :start and :end " +
-            "and e.uri in :uris " +
-            "group by e.app, e.uri " +
-            "order by count(e.ip) desc"
+
+    @Query(value = "SELECT new ru.practicum.model.ViewStats(h.app, h.uri, COUNT(DISTINCT h.ip)) " +
+            "FROM StatsModel AS h " +
+            "WHERE h.timestamp BETWEEN :start AND :end " +
+            "AND h.uri IN :uris " +
+            "GROUP BY h.app, h.uri " +
+            "ORDER BY COUNT(DISTINCT h.ip) DESC"
     )
-    List<ViewStats> findAllByDateBetweenUnique(
-            @Param("start") LocalDateTime start,
-            @Param("end") LocalDateTime end,
-            @Param("uris") List<String> uri
+    List<ViewStats> findStatsByUrisByUniqIp(@Param("start") LocalDateTime start,
+                                            @Param("end") LocalDateTime end,
+                                            @Param("uris") List<String> uris
     );
 }
 
