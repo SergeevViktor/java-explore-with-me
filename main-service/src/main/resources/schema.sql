@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS events (
 	title VARCHAR(120) NOT NULL,
 	state VARCHAR(10) NOT NULL,
 	created_on TIMESTAMP NOT NULL,
-	published_on TIMESTAMP
+	published_on TIMESTAMP,
 	category_id BIGINT NOT NULL REFERENCES categories (id),
 	location_id BIGINT NOT NULL REFERENCES locations (id),
 	initiator_id BIGINT NOT NULL REFERENCES users (id),
@@ -53,7 +53,4 @@ CREATE TABLE IF NOT EXISTS compilations_events (
 	compilation_id BIGINT REFERENCES compilations (id),
 	event_id BIGINT REFERENCES events (id),
 	PRIMARY KEY (compilation_id, event_id)
-)
-
-
-
+);
