@@ -1,6 +1,5 @@
 package ru.practicum.main_service;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-@AllArgsConstructor
 @RequiredArgsConstructor
 public class StatisticClient {
     private static final String APP = "main-service";
