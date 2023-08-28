@@ -1,16 +1,12 @@
 package ru.practicum.main_service.service.eventService;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.HitRequestDto;
-import ru.practicum.StatsResponseDto;
-import ru.practicum.client.StatsClient;
+import ru.practicum.main_service.StatisticClient;
 import ru.practicum.main_service.controller.enums.EventSort;
 import ru.practicum.main_service.dto.event.*;
 import ru.practicum.main_service.dto.event.enums.AdminStateAction;
@@ -42,10 +38,7 @@ public class EventServiceImpl implements EventService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final ParticipationRequestRepository requestRepository;
-    private final StatsClient statsClient;
-    public static final String APP = "main-service";
-    public static final String START = String.valueOf(LocalDateTime.of(2000, 1, 1, 0, 0));
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final StatisticClient statisticClient;
 
     @Transactional
     @Override
@@ -356,38 +349,12 @@ public class EventServiceImpl implements EventService {
     }
 
     private void sentHitToStats(String uri, String ip) {
-        HitRequestDto hitRequestDto = new HitRequestDto();
-        hitRequestDto.setApp(APP);
-        hitRequestDto.setUri(uri);
-        hitRequestDto.setIp(ip);
-        hitRequestDto.setTimestamp(LocalDateTime.now());
-        statsClient.postEndpointHit(hitRequestDto);
+        ResponseEntity<Object> hitRequestDto = statisticClient.saveHit(uri, ip);
         log.info("Информация направлена в сервер статистики: {}", hitRequestDto);
     }
 
     private Map<Long, Long> getViews(List<Long> eventsId) {
-        List<String> uris = new ArrayList<>();
-        for (Long eventId : eventsId) {
-            String uri = "/events/" + eventId;
-            uris.add(uri);
-        }
-        ResponseEntity<Object> response = statsClient.getStatistic(START, String.valueOf(LocalDateTime.now()), uris, true);
-        log.info("В сервер статистики направлен запрос на получение статистики за период с {} по {} для списка " +
-                "uri {}, unique = {}", START, LocalDateTime.now(), uris, true);
-        Object responseBody = response.getBody();
-        System.out.println(responseBody);
-        List<StatsResponseDto> result = objectMapper.convertValue(responseBody, new TypeReference<List<StatsResponseDto>>() {
-        });
-
-        Map<Long, Long> views = new HashMap<>();
-        for (StatsResponseDto dto : result) {
-            String uri = dto.getUri();
-            String[] split = uri.split("/");
-            String id = split[2];
-            Long eventId = Long.parseLong(id);
-            views.put(eventId, dto.getHits());
-        }
-        return views;
+        return statisticClient.setViewsNumber(eventsId);
     }
 
 }
