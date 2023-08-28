@@ -1,6 +1,6 @@
 package ru.practicum.main_service;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import ru.practicum.HitRequestDto;
@@ -14,11 +14,15 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-@RequiredArgsConstructor
 public class StatisticClient {
     private static final String APP = "main-service";
     private static final int YEARS_OFFSET = 100;
     private final StatsClient statsClient;
+
+    @Autowired
+    public StatisticClient(StatsClient statsClient) {
+        this.statsClient = statsClient;
+    }
 
     public ResponseEntity<Object> saveHit(String uri, String ip) {
         HitRequestDto hitRequestDto = HitRequestDto.builder()
