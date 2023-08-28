@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS users, categories, locations, events, participation_request
 CREATE TABLE IF NOT EXISTS users ( 
 	id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 
 	name VARCHAR(250) NOT NULL,
-	email VARCHAR(254) NOT NULL UNIQUE
+	email VARCHAR(250) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS categories ( 
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS events (
 	request_moderation Boolean NOT NULL,
 	participant_limit INT NOT NULL,
 	title VARCHAR(120) NOT NULL,
-	state VARCHAR(9) NOT NULL,
+	state VARCHAR(10) NOT NULL,
 	created_on TIMESTAMP NOT NULL,
 	published_on TIMESTAMP
 	category_id BIGINT NOT NULL REFERENCES categories (id),
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS events (
 CREATE TABLE IF NOT EXISTS participation_requests (
 	id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 
 	created TIMESTAMP NOT NULL,
-	status VARCHAR(9) NOT NULL,
+	status VARCHAR(10) NOT NULL,
 	event_id BIGINT NOT NULL REFERENCES events (id),
 	requester_id BIGINT NOT NULL REFERENCES users (id),
 	CONSTRAINT uq_request UNIQUE(event_id, requester_id)
