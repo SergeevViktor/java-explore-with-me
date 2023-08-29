@@ -6,5 +6,5 @@ create table if not exists stats (
     uri       VARCHAR(512)                NOT NULL,
     ip        VARCHAR(255)                NOT NULL,
     timestamp TIMESTAMP NOT NULL
-    );
+);
 
