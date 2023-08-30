@@ -44,13 +44,13 @@ public class StatisticServiceImpl implements StatisticService {
         }
         if (uris == null || uris.isEmpty()) {
             if (unique) {
-                viewStatsList = statisticRepository.findAllByDateBetweenUnique(start, end);
+                viewStatsList = statisticRepository.findAllStatsByUniqIp(start, end);
             } else {
                 viewStatsList = statisticRepository.findAllByDateBetween(start, end);
             }
         } else {
             if (unique) {
-                viewStatsList = statisticRepository.findAllByDateBetweenUnique(start, end, uris);
+                viewStatsList = statisticRepository.findStatsByUrisByUniqIp(start, end, uris);
             } else {
                 viewStatsList = statisticRepository.findAllByDateBetween(start, end, uris);
             }
