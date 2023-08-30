@@ -46,7 +46,7 @@ public class CompilationServiceImpl implements CompilationService {
             return Collections.emptyList();
         }
         List<CompilationDto> collect = compilations.stream().map(compilation ->
-                CompilationMapper.INSTANCE.toCompilationDto(compilation,
+                CompilationMapper.toCompilationDto(compilation,
                         maptoDto(compilation.getEvents()))).collect(Collectors.toList());
         log.info("Запрос GET на получение подборок событий");
 
@@ -59,11 +59,11 @@ public class CompilationServiceImpl implements CompilationService {
         if (newCompilationDto.getEvents() != null) {
             events = eventRepository.findAllById(newCompilationDto.getEvents());
         }
-        Compilation compilation = CompilationMapper.INSTANCE.toCompilation(newCompilationDto, events);
+        Compilation compilation = CompilationMapper.toCompilation(newCompilationDto, events);
         Compilation result = compilationsRepository.save(compilation);
         log.info("Запрос POST на добавление новой подборки c id: {}", compilation.getId());
 
-        return CompilationMapper.INSTANCE.toCompilationDto(result, maptoDto(events));
+        return CompilationMapper.toCompilationDto(result, maptoDto(events));
     }
 
     @Override
@@ -94,14 +94,14 @@ public class CompilationServiceImpl implements CompilationService {
         }
         log.info("Запрос PATH на изменение подборки событий по id: {}", compId);
 
-        return CompilationMapper.INSTANCE.toCompilationDto(result, maptoDto(events));
+        return CompilationMapper.toCompilationDto(result, maptoDto(events));
     }
 
     @Override
     public CompilationDto getCompilationsById(Long compId) {
         Compilation compilation = getCompilation(compId);
         log.info("Запрос GET на получение подборки событий по id: {}", compId);
-        return CompilationMapper.INSTANCE.toCompilationDto(compilation, maptoDto(compilation.getEvents()));
+        return CompilationMapper.toCompilationDto(compilation, maptoDto(compilation.getEvents()));
     }
 
     private List<Event> getFromId(List<Long> evenIdList) {

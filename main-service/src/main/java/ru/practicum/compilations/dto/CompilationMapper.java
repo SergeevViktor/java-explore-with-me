@@ -1,19 +1,30 @@
 package ru.practicum.compilations.dto;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import lombok.experimental.UtilityClass;
 import ru.practicum.compilations.model.Compilation;
 import ru.practicum.event.dto.EventShortDto;
 import ru.practicum.event.model.Event;
 
 import java.util.List;
 
-@Mapper
-public interface CompilationMapper {
+@UtilityClass
+public class CompilationMapper {
+    public static Compilation toCompilation(NewCompilationDto newCompilationDto, List<Event> events) {
+        return Compilation.builder()
+                .pinned(newCompilationDto.getPinned())
+                .title(newCompilationDto.getTitle())
+                .events(events)
+                .build();
 
-    CompilationMapper INSTANCE = Mappers.getMapper(CompilationMapper.class);
+    }
 
-    Compilation toCompilation(NewCompilationDto newCompilationDto, List<Event> events);
+    public static CompilationDto toCompilationDto(Compilation compilation, List<EventShortDto> events) {
+        return CompilationDto.builder()
+                .id(compilation.getId())
+                .pinned(compilation.getPinned())
+                .title(compilation.getTitle())
+                .events(events)
+                .build();
 
-    CompilationDto toCompilationDto(Compilation compilation, List<EventShortDto> events);
+    }
 }
