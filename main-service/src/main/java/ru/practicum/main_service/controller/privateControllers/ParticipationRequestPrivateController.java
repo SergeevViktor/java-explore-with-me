@@ -28,7 +28,7 @@ public class ParticipationRequestPrivateController {
                                                     @RequestParam Long eventId) {
         log.info("Поступил запрос от пользователя с id {} на создание запроса на участие в событии с id {} ",
                 userId, eventId);
-        URI uri = URI.create("http://localhost:8080/users/" + userId );
+        URI uri = URI.create("http://localhost:8080/users/" + userId);
         return ResponseEntity.created(uri).body(requestService.createRequest(userId, eventId));
     }
 
