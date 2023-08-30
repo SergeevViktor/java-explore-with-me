@@ -22,7 +22,7 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "annotation")
+    @Column(name = "annotation", length = 2000)
     @NotBlank
     String annotation;
 
@@ -31,7 +31,7 @@ public class Event {
     @NotNull
     Category category;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 7000)
     @NotBlank
     String description;
 

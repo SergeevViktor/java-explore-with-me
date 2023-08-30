@@ -29,8 +29,8 @@ public class EventPrivateController {
     public ResponseEntity<EventFullDto> createEvent(@PathVariable Long userId,
                                                     @Valid @RequestBody NewEventDto newEventDto) {
         log.info("Поступил запрос от пользователя с id {} на создание события {} ", userId, newEventDto);
-        return ResponseEntity.created(URI.create("http://localhost:8080/users/{userId}/events"))
-                .body(eventService.createEvent(userId, newEventDto));
+        URI uri = URI.create("http://localhost:8080/users/" + userId + "/events");
+        return ResponseEntity.created(uri).body(eventService.createEvent(userId, newEventDto));
     }
 
     @GetMapping("/users/{userId}/events")
