@@ -15,7 +15,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/users/{userId}")
+@RequestMapping
 @RequiredArgsConstructor
 @Validated
 @Slf4j
@@ -23,7 +23,7 @@ public class ParticipationRequestPrivateController {
 
     private final ParticipationRequestService requestService;
 
-    @PostMapping("/requests")
+    @PostMapping("/users/{userId}/requests")
     public ResponseEntity<RequestDto> createRequest(@PathVariable Long userId,
                                                     @RequestParam Long eventId) {
         log.info("Поступил запрос от пользователя с id {} на создание запроса на участие в событии с id {} ",
@@ -32,7 +32,7 @@ public class ParticipationRequestPrivateController {
                 .body(requestService.createRequest(userId, eventId));
     }
 
-    @GetMapping("/events/{eventId}/requests")
+    @GetMapping("/users/{userId}/events/{eventId}/requests")
     public ResponseEntity<List<RequestDto>> getAllRequestsByEventInitiator(@PathVariable Long userId,
                                                                            @PathVariable Long eventId) {
         log.info("Поступил запрос от инициатора с id {} на получение всех запросов на участие в его событии с id {}",
@@ -40,14 +40,14 @@ public class ParticipationRequestPrivateController {
         return ResponseEntity.ok().body(requestService.getAllRequestsByEventInitiator(userId, eventId));
     }
 
-    @GetMapping("/requests")
+    @GetMapping("/users/{userId}/requests")
     public ResponseEntity<List<RequestDto>> getAllRequestsByRequester(@PathVariable Long userId) {
         log.info("Поступил запрос от пользователя с id {} на получение всех его запросов на участие в событиях",
                 userId);
         return ResponseEntity.ok().body(requestService.getAllRequestsByRequester(userId));
     }
 
-    @PatchMapping("/requests/{requestId}/cancel")
+    @PatchMapping("/users/{userId}/requests/{requestId}/cancel")
     public ResponseEntity<RequestDto> updateRequestStatusByRequester(@PathVariable Long userId,
                                                                      @PathVariable Long requestId) {
         log.info("Поступил запрос на обновление статуса запроса на участие в событии с id={} от пользователя с id={}",
@@ -55,7 +55,7 @@ public class ParticipationRequestPrivateController {
         return ResponseEntity.ok().body(requestService.updateRequestStatusByRequester(userId, requestId));
     }
 
-    @PatchMapping("/events/{eventId}/requests")
+    @PatchMapping("/users/{userId}/events/{eventId}/requests")
     public ResponseEntity<UpdateRequestResponse> updateRequestsStatusByEventInitiator(@PathVariable Long userId,
                                                                                       @PathVariable Long eventId,
                                                                                       @Valid @RequestBody

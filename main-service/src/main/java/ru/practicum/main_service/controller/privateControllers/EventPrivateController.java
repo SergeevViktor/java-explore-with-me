@@ -17,7 +17,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/users/{userId}/events")
+@RequestMapping
 @RequiredArgsConstructor
 @Validated
 @Slf4j
@@ -25,7 +25,7 @@ public class EventPrivateController {
 
     private final EventService eventService;
 
-    @PostMapping
+    @PostMapping("/users/{userId}/events")
     public ResponseEntity<EventFullDto> createEvent(@PathVariable Long userId,
                                                     @Valid @RequestBody NewEventDto newEventDto) {
         log.info("Поступил запрос от пользователя с id {} на создание события {} ", userId, newEventDto);
@@ -33,7 +33,7 @@ public class EventPrivateController {
                 .body(eventService.createEvent(userId, newEventDto));
     }
 
-    @GetMapping
+    @GetMapping("/users/{userId}/events")
     public ResponseEntity<List<EventFullDto>> getAllEventsByInitiator(@PathVariable Long userId,
                                                                       @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
                                                                       @RequestParam(defaultValue = "10") @Positive Integer size) {
@@ -42,14 +42,14 @@ public class EventPrivateController {
         return ResponseEntity.ok().body(eventService.getAllEventsByInitiator(userId, from, size));
     }
 
-    @GetMapping("/{eventId}")
+    @GetMapping("/users/{userId}/events/{eventId}")
     public ResponseEntity<EventFullDto> getEventByIdByInitiator(@PathVariable Long userId,
                                                                 @PathVariable Long eventId) {
         log.info("Поступил запрос от инициатора с id={} на получение события с id={} ", userId, eventId);
         return ResponseEntity.ok().body(eventService.getEventByIdByInitiator(userId, eventId));
     }
 
-    @PatchMapping("/{eventId}")
+    @PatchMapping("/users/{userId}/events/{eventId}")
     public ResponseEntity<EventFullDto> updateEventByInitiator(@PathVariable Long userId,
                                                                @PathVariable Long eventId,
                                                                @Valid @RequestBody UpdateEventInitiatorRequestDto eventDto) {
