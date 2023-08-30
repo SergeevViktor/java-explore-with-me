@@ -1,6 +1,10 @@
 package ru.practicum.categories.model;
 
 
+import lombok.*;
+
+import javax.persistence.*;
+
 @Entity
 @Table(name = "categories")
 @Getter

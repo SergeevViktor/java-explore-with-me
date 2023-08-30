@@ -1,9 +1,11 @@
 package ru.practicum.event.model;
 
+import lombok.*;
 import ru.practicum.categories.model.Categories;
 import ru.practicum.request.model.Request;
 import ru.practicum.users.model.User;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 

@@ -1,5 +1,9 @@
 package ru.practicum.users.model;
 
+import lombok.*;
+
+import javax.persistence.*;
+
 @Entity
 @Table(name = "users")
 @Builder

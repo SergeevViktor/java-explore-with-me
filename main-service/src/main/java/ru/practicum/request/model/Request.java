@@ -1,8 +1,10 @@
 package ru.practicum.request.model;
 
+import lombok.*;
 import ru.practicum.event.model.Event;
 import ru.practicum.users.model.User;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity

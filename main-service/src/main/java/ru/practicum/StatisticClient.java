@@ -3,11 +3,8 @@ package ru.practicum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import ru.practicum.HitRequestDto;
-import ru.practicum.StatsResponseDto;
-import ru.practicum.client.StatsClient;
-import ru.practicum.main_service.event.dto.EventFullDto;
-import ru.practicum.main_service.event.dto.EventShortDto;
+import ru.practicum.event.dto.EventFullDto;
+import ru.practicum.event.dto.EventShortDto;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -69,7 +66,7 @@ public class StatisticClient {
         for (var hit : hits) {
             String hitUri = hit.getUri();
             Long id = Long.valueOf(hitUri.substring(8));
-            hitMap.put(id, (int) hit.getHits());
+            hitMap.put(id, Math.toIntExact(hit.getHits()));
         }
         return hitMap;
     }

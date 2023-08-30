@@ -1,7 +1,9 @@
 package ru.practicum.compilations.model;
 
+import lombok.*;
 import ru.practicum.event.model.Event;
 
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
