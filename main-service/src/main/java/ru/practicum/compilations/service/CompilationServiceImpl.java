@@ -124,8 +124,8 @@ public class CompilationServiceImpl implements CompilationService {
         List<EventShortDto> eventShortDto = events.stream().map(event ->
                 EventMapper.toEventShortDto(
                         event,
-                        CategoriesMapper.INSTANCE.toCategoryDto(event.getCategory()),
-                        UserMapper.INSTANCE.toUserDto(event.getInitiator())
+                        CategoriesMapper.toCategoryDto(event.getCategory()),
+                        UserMapper.toUserDto(event.getInitiator())
                 )).collect(Collectors.toList());
         return eventShortDto;
     }

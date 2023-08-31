@@ -23,7 +23,7 @@ public class RequestMapper {
             List<Request> confirmedRequests,
             List<Request> rejectedRequests
     ) {
-       return EventRequestStatusUpdateResult.builder()
+        return EventRequestStatusUpdateResult.builder()
                 .confirmedRequests(confirmedRequests.stream().map(RequestMapper::toRequestDto).collect(Collectors.toList()))
                 .rejectedRequests(rejectedRequests.stream().map(RequestMapper::toRequestDto).collect(Collectors.toList()))
                 .build();

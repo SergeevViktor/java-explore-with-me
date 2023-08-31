@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
         }
         log.info("Запрос GET на поиск пользователей, с ids: {}", ids);
 
-        return users.stream().map(UserMapper.INSTANCE::toUserDto).collect(Collectors.toList());
+        return users.stream().map(UserMapper::toUserDto).collect(Collectors.toList());
     }
 
     @Override
@@ -41,9 +41,9 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsUserByName(userRequestDto.getName())) {
             throw new ConflictException("Такой пользователь уже есть");
         }
-        User user = UserMapper.INSTANCE.toUser(userRequestDto);
+        User user = UserMapper.toUser(userRequestDto);
         log.info("Запрос POST на сохранение пользователя: {}", user.getName());
-        return UserMapper.INSTANCE.toUserDto(userRepository.save(user));
+        return UserMapper.toUserDto(userRepository.save(user));
     }
 
     @Override

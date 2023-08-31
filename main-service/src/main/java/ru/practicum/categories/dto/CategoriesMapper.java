@@ -1,16 +1,21 @@
 package ru.practicum.categories.dto;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import lombok.experimental.UtilityClass;
 import ru.practicum.categories.model.Categories;
 
-@Mapper
-public interface CategoriesMapper {
+@UtilityClass
+public class CategoriesMapper {
+    public static CategoryDto toCategoryDto(Categories categories) {
+        return CategoryDto.builder()
+                .id(categories.getId())
+                .name(categories.getName())
+                .build();
+    }
 
-    CategoriesMapper INSTANCE = Mappers.getMapper(CategoriesMapper.class);
-
-    CategoryDto toCategoryDto(Categories categories);
-
-    Categories toCategories(NewCategoryDto newCategoryDto);
+    public static Categories toCategories(NewCategoryDto newCategoryDto) {
+        return Categories.builder()
+                .name(newCategoryDto.getName())
+                .build();
+    }
 
 }

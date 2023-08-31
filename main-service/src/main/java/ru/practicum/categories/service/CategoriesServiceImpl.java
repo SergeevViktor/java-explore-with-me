@@ -32,13 +32,13 @@ public class CategoriesServiceImpl implements CategoriesService {
         PageRequest page = PageRequest.of(offset, size);
         List<Categories> categoriesList = categoriesRepository.findAll(page).getContent();
         log.info("Запрос GET на получение списка категорий");
-        return categoriesList.stream().map(CategoriesMapper.INSTANCE::toCategoryDto).collect(Collectors.toList());
+        return categoriesList.stream().map(CategoriesMapper::toCategoryDto).collect(Collectors.toList());
     }
 
     @Override
     public CategoryDto getCategoriesId(Long catId) {
         Categories categories = getCategoriesIfExist(catId);
-        return CategoriesMapper.INSTANCE.toCategoryDto(categories);
+        return CategoriesMapper.toCategoryDto(categories);
     }
 
     @Override
@@ -46,9 +46,9 @@ public class CategoriesServiceImpl implements CategoriesService {
         if (categoriesRepository.existsCategoriesByName(newCategoryDto.getName())) {
             throw new ConflictException("Такая категория уже есть");
         }
-        Categories categories = categoriesRepository.save(CategoriesMapper.INSTANCE.toCategories(newCategoryDto));
+        Categories categories = categoriesRepository.save(CategoriesMapper.toCategories(newCategoryDto));
         log.info("Запрос POST на сохранение категории: {}", newCategoryDto.getName());
-        return CategoriesMapper.INSTANCE.toCategoryDto(categories);
+        return CategoriesMapper.toCategoryDto(categories);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class CategoriesServiceImpl implements CategoriesService {
 
         categories.setName(categoryDto.getName());
         log.info("Запрос PATH на изменение категории: c id: {}", categoryDto.getId());
-        return CategoriesMapper.INSTANCE.toCategoryDto(categoriesRepository.save(categories));
+        return CategoriesMapper.toCategoryDto(categoriesRepository.save(categories));
     }
 
     private Categories getCategoriesIfExist(Long catId) {

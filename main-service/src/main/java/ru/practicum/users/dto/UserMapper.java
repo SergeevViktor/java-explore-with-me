@@ -1,16 +1,23 @@
 package ru.practicum.users.dto;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import lombok.experimental.UtilityClass;
 import ru.practicum.users.model.User;
 
-@Mapper
-public interface UserMapper {
+@UtilityClass
+public class UserMapper {
+    public static UserDto toUserDto(User user) {
+        return UserDto.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .name(user.getName())
+                .build();
+    }
 
-    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
-
-    UserDto toUserDto(User user);
-
-    User toUser(NewUserRequestDto userRequestDto);
+    public static User toUser(NewUserRequestDto userRequestDto) {
+        return User.builder()
+                .email(userRequestDto.getEmail())
+                .name(userRequestDto.getName())
+                .build();
+    }
 
 }

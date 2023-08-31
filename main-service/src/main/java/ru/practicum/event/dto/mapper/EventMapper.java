@@ -24,23 +24,23 @@ public class EventMapper {
     public static EventFullDto toEventFullDto(Event event) {
         EventFullDto eventFullDto = EventFullDto.builder()
                 .annotation(event.getAnnotation())
-                .category(CategoriesMapper.INSTANCE.toCategoryDto(event.getCategory()))
+                .category(CategoriesMapper.toCategoryDto(event.getCategory()))
                 .createdOn(event.getCreatedOn())
                 .description(event.getDescription())
                 .eventDate(event.getEventDate())
                 .id(event.getId())
-                .initiator(UserMapper.INSTANCE.toUserDto(event.getInitiator()))
+                .initiator(UserMapper.toUserDto(event.getInitiator()))
                 .paid(event.getPaid())
                 .participantLimit(event.getParticipantLimit())
                 .publishedOn(event.getPublishedOn())
                 .requestModeration(event.getRequestModeration())
                 .state(event.getState())
                 .title(event.getTitle())
-                .location(LocationMapper.INSTANCE.toLocationDto(event.getLocation()))
+                .location(LocationMapper.toLocationDto(event.getLocation()))
                 .build();
         if (event.getParticipationRequests() != null && !event.getParticipationRequests().isEmpty()) {
             eventFullDto.setConfirmedRequests(event.getParticipationRequests().stream()
-                             .filter(participationRequest -> participationRequest.getStatus() == ParticipationRequestStatus.CONFIRMED)
+                    .filter(participationRequest -> participationRequest.getStatus() == ParticipationRequestStatus.CONFIRMED)
                     .count());
         } else eventFullDto.setConfirmedRequests(0L);
         return eventFullDto;
@@ -52,7 +52,7 @@ public class EventMapper {
                 .category(event.getCategory().getId())
                 .description(event.getDescription())
                 .eventDate(event.getEventDate())
-                .location(LocationMapper.INSTANCE.toLocationDto(event.getLocation()))
+                .location(LocationMapper.toLocationDto(event.getLocation()))
                 .paid(event.getPaid())
                 .participantLimit(event.getParticipantLimit())
                 .requestModeration(event.getRequestModeration())
@@ -77,10 +77,10 @@ public class EventMapper {
     public static EventShortDto mapToShortDto(Event event) {
         return EventShortDto.builder()
                 .annotation(event.getAnnotation())
-                .category(CategoriesMapper.INSTANCE.toCategoryDto(event.getCategory()))
+                .category(CategoriesMapper.toCategoryDto(event.getCategory()))
                 .eventDate(event.getEventDate())
                 .id(event.getId())
-                .initiator(UserMapper.INSTANCE.toUserDto(event.getInitiator()))
+                .initiator(UserMapper.toUserDto(event.getInitiator()))
                 .paid(event.getPaid())
                 .title(event.getTitle())
                 .build();
@@ -105,13 +105,13 @@ public class EventMapper {
     public EventFullDto mapToFullDto(Event event) {
         EventFullDto dto = new EventFullDto();
         dto.setAnnotation(event.getAnnotation());
-        dto.setCategory(CategoriesMapper.INSTANCE.toCategoryDto(event.getCategory()));
+        dto.setCategory(CategoriesMapper.toCategoryDto(event.getCategory()));
         dto.setCreatedOn(event.getCreatedOn());
         dto.setDescription(event.getDescription());
         dto.setEventDate(event.getEventDate());
         dto.setId(event.getId());
-        dto.setInitiator(UserMapper.INSTANCE.toUserDto(event.getInitiator()));
-        dto.setLocation(LocationMapper.INSTANCE.toLocationDto(event.getLocation()));
+        dto.setInitiator(UserMapper.toUserDto(event.getInitiator()));
+        dto.setLocation(LocationMapper.toLocationDto(event.getLocation()));
         dto.setPaid(event.getPaid());
         dto.setParticipantLimit(event.getParticipantLimit());
         dto.setPublishedOn(event.getPublishedOn());
