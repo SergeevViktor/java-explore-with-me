@@ -1,19 +1,19 @@
 package ru.practicum.categories.dto;
 
 import lombok.experimental.UtilityClass;
-import ru.practicum.categories.model.Categories;
+import ru.practicum.categories.model.Category;
 
 @UtilityClass
 public class CategoriesMapper {
-    public static CategoryDto toCategoryDto(Categories categories) {
+    public static CategoryDto toCategoryDto(Category category) {
         return CategoryDto.builder()
-                .id(categories.getId())
-                .name(categories.getName())
+                .id(category.getId())
+                .name(category.getName())
                 .build();
     }
 
-    public static Categories toCategories(NewCategoryDto newCategoryDto) {
-        return Categories.builder()
+    public static Category toCategory(NewCategoryDto newCategoryDto) {
+        return Category.builder()
                 .name(newCategoryDto.getName())
                 .build();
     }

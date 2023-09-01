@@ -10,7 +10,7 @@ import ru.practicum.event.dto.*;
 import ru.practicum.event.dto.mapper.EventMapper;
 import ru.practicum.event.model.SortEvents;
 import ru.practicum.event.model.State;
-import ru.practicum.categories.model.Categories;
+import ru.practicum.categories.model.Category;
 import ru.practicum.event.model.Event;
 import ru.practicum.event.model.Location;
 import ru.practicum.event.repository.CustomBuiltEventRepository;
@@ -18,7 +18,7 @@ import ru.practicum.event.repository.EventRepository;
 import ru.practicum.event.repository.LocationRepository;
 import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.ObjectNotFoundException;
-import ru.practicum.request.RequestRepository;
+import ru.practicum.request.repository.RequestRepository;
 import ru.practicum.request.dto.ParticipationRequestDto;
 import ru.practicum.request.dto.RequestMapper;
 import ru.practicum.request.model.ParticipationRequestStatus;
@@ -137,8 +137,8 @@ public class EventServiceImpl implements EventService {
         User user = getUser(userId);
         Location location = getLocation(newEventDto.getLocation());
         locationRepository.save(location);
-        Categories categories = getCategoriesIfExist(newEventDto.getCategory());
-        Event event = EventMapper.toEvent(newEventDto, categories, location, user);
+        Category category = getCategoriesIfExist(newEventDto.getCategory());
+        Event event = EventMapper.toEvent(newEventDto, category, location, user);
         event.setConfirmedRequests(0L);
         event.setViews(0L);
         event.setCreatedOn(LocalDateTime.now());
@@ -325,8 +325,8 @@ public class EventServiceImpl implements EventService {
             event.setAnnotation(requestDto.getAnnotation());
         }
         if (requestDto.getCategory() != null) {
-            Categories categories = getCategoriesIfExist(requestDto.getCategory());
-            event.setCategory(categories);
+            Category category = getCategoriesIfExist(requestDto.getCategory());
+            event.setCategory(category);
         }
         if (requestDto.getDescription() != null) {
             event.setDescription(requestDto.getDescription());
@@ -382,7 +382,7 @@ public class EventServiceImpl implements EventService {
                 .orElseThrow(() -> new ObjectNotFoundException("Такого мероприятия не существует!"));
     }
 
-    public Categories getCategoriesIfExist(Long catId) {
+    public Category getCategoriesIfExist(Long catId) {
         return categoriesRepository.findById(catId).orElseThrow(
                 () -> new ObjectNotFoundException("Не найдена выбранная категория"));
     }

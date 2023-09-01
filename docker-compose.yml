@@ -3,7 +3,7 @@ services:
   stats-server:
     build: ./stats-service/service
     image: service
-    container_name: service
+    container_name: stats-service
     ports:
       - "9090:9090"
     depends_on:
@@ -29,6 +29,7 @@ services:
     build: ./main-service
     image: main-service
     container_name: main-service
+    restart: on-failure
     ports:
       - "8080:8080"
 

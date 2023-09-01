@@ -8,7 +8,7 @@ import ru.practicum.event.model.State;
 import ru.practicum.event.repository.EventRepository;
 import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.ObjectNotFoundException;
-import ru.practicum.request.RequestRepository;
+import ru.practicum.request.repository.RequestRepository;
 import ru.practicum.request.dto.ParticipationRequestDto;
 import ru.practicum.request.dto.RequestMapper;
 import ru.practicum.request.model.ParticipationRequestStatus;

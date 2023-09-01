@@ -20,7 +20,8 @@ public class AdminCategoriesController {
 
     @PostMapping
     public ResponseEntity<CategoryDto> createCategories(@RequestBody @Valid NewCategoryDto newCategoryDto) {
-        return ResponseEntity.created(URI.create("http://localhost:8080/admin/categories")).body(categoriesService.createCategories(newCategoryDto));
+        return ResponseEntity.created(URI.create("http://localhost:8080/admin/categories"))
+                .body(categoriesService.createCategories(newCategoryDto));
     }
 
     @DeleteMapping("/{catId}")

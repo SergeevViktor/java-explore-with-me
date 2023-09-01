@@ -21,12 +21,12 @@ public class AdminUserController {
     private final UserService userService;
 
     @GetMapping
-    public List<UserDto> getUsers(@RequestParam(required = false) List<Long> ids,
+    public ResponseEntity<List<UserDto>> getUsers(@RequestParam(required = false) List<Long> ids,
                                   @RequestParam(required = false, defaultValue = "0")
                                   @PositiveOrZero Integer from,
                                   @RequestParam(required = false, defaultValue = "10")
                                   @PositiveOrZero Integer size) {
-        return userService.getUsers(ids, from, size);
+        return ResponseEntity.ok().body(userService.getUsers(ids, from, size));
     }
 
     @PostMapping

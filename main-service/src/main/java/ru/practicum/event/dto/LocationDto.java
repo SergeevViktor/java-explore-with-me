@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class LocationDto {
     @NotNull
-    private float lat;
+    private Float lat;
     @NotNull
-    private float lon;
+    private Float lon;
 }

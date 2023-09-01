@@ -1,7 +1,7 @@
 package ru.practicum.event.model;
 
 import lombok.*;
-import ru.practicum.categories.model.Categories;
+import ru.practicum.categories.model.Category;
 import ru.practicum.request.model.Request;
 import ru.practicum.users.model.User;
 
@@ -92,7 +92,7 @@ public class Event {
      */
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
-    private Categories category;
+    private Category category;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")

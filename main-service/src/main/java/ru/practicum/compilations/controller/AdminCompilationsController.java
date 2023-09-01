@@ -22,7 +22,8 @@ public class AdminCompilationsController {
     @PostMapping
     public ResponseEntity<CompilationDto> createCompilation(@RequestBody(required = false)
                                             @Valid NewCompilationDto newCompilationDto) {
-        return ResponseEntity.created(URI.create("http://localhost:8080/admin/compilations")).body(compilationService.createCompilation(newCompilationDto));
+        return ResponseEntity.created(URI.create("http://localhost:8080/admin/compilations"))
+                .body(compilationService.createCompilation(newCompilationDto));
     }
 
     @DeleteMapping("/{compId}")
@@ -32,9 +33,9 @@ public class AdminCompilationsController {
     }
 
     @PatchMapping("/{compId}")
-    public CompilationDto updateCompilation(@PathVariable Long compId,
+    public ResponseEntity<CompilationDto> updateCompilation(@PathVariable Long compId,
                                             @RequestBody @Valid
                                             UpdateCompilationRequest request) {
-        return compilationService.updateCompilation(compId, request);
+        return ResponseEntity.ok().body(compilationService.updateCompilation(compId, request));
     }
 }

@@ -2,6 +2,7 @@ package ru.practicum.event.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.event.dto.EventShortDto;
 import ru.practicum.event.model.SortEvents;
@@ -23,7 +24,7 @@ public class PublicEventController {
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @GetMapping
-    public List<EventShortDto> getEvents(@RequestParam(required = false) String text,
+    public ResponseEntity<List<EventShortDto>> getEvents(@RequestParam(required = false) String text,
                                          @RequestParam(required = false) List<Long> categories,
                                          @RequestParam(required = false) Boolean paid,
                                          @RequestParam(required = false) String rangeStart,
@@ -50,13 +51,15 @@ public class PublicEventController {
             }
         }
 
-        return eventService.getEvents(text, categories, paid, start, end, onlyAvailable, sort, from, size, request);
+        return ResponseEntity.ok().body(
+                eventService.getEvents(text, categories, paid, start, end, onlyAvailable, sort, from, size, request)
+        );
     }
 
     @GetMapping("/{id}")
-    public EventFullDto getEventById(@PathVariable Long id, HttpServletRequest request) {
+    public ResponseEntity<EventFullDto> getEventById(@PathVariable Long id, HttpServletRequest request) {
 
-        return eventService.getEventById(id, request);
+        return ResponseEntity.ok().body(eventService.getEventById(id, request));
     }
 
 }

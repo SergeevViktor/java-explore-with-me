@@ -6,7 +6,7 @@ import ru.practicum.event.dto.EventFullDto;
 import ru.practicum.event.dto.EventShortDto;
 import ru.practicum.event.dto.NewEventDto;
 import ru.practicum.categories.dto.CategoryDto;
-import ru.practicum.categories.model.Categories;
+import ru.practicum.categories.model.Category;
 import ru.practicum.event.model.Event;
 import ru.practicum.event.model.Location;
 import ru.practicum.event.model.State;
@@ -86,10 +86,10 @@ public class EventMapper {
                 .build();
     }
 
-    public static Event toEvent(NewEventDto newEventDto, Categories categories, Location location, User user) {
+    public static Event toEvent(NewEventDto newEventDto, Category category, Location location, User user) {
         return Event.builder()
                 .annotation(newEventDto.getAnnotation())
-                .category(categories)
+                .category(category)
                 .description(newEventDto.getDescription())
                 .eventDate(newEventDto.getEventDate())
                 .location(location)

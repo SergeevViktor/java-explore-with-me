@@ -16,8 +16,8 @@ public class RequestController {
     private final RequestService requestsService;
 
     @GetMapping
-    public List<ParticipationRequestDto> getRequest(@PathVariable Long userId) {
-        return requestsService.getRequest(userId);
+    public ResponseEntity<List<ParticipationRequestDto>> getRequest(@PathVariable Long userId) {
+        return ResponseEntity.ok().body(requestsService.getRequest(userId));
     }
 
     @PostMapping
@@ -27,8 +27,8 @@ public class RequestController {
     }
 
     @PatchMapping("/{requestId}/cancel")
-    public ParticipationRequestDto cancelRequest(@PathVariable Long userId, @PathVariable Long requestId) {
-        return requestsService.cancelRequest(userId, requestId);
+    public ResponseEntity<ParticipationRequestDto> cancelRequest(@PathVariable Long userId, @PathVariable Long requestId) {
+        return ResponseEntity.ok().body(requestsService.cancelRequest(userId, requestId));
     }
 
 }
