@@ -1,4 +1,4 @@
-package ru.practicum.request.service.friendRequestService;
+package ru.practicum.request.service.requestService;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.practicum.request.dto.RequestDto;

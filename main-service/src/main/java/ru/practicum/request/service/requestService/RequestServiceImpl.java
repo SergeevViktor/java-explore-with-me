@@ -1,4 +1,4 @@
-package ru.practicum.request.service.friendRequestService;
+package ru.practicum.request.service.requestService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

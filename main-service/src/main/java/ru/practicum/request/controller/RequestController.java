@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.request.dto.RequestDto;
-import ru.practicum.request.service.friendRequestService.RequestService;
+import ru.practicum.request.service.requestService.RequestService;
 
 import java.net.URI;
 import java.util.List;

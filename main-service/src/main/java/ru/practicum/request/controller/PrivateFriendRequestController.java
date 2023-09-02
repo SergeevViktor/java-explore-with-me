@@ -9,7 +9,7 @@ import ru.practicum.event.dto.EventShortDto;
 import ru.practicum.event.service.EventService;
 import ru.practicum.request.dto.friendRequestDto.FriendRequestDto;
 import ru.practicum.request.dto.friendRequestDto.UpdateFriendRequestDto;
-import ru.practicum.request.service.requestService.FriendRequestService;
+import ru.practicum.request.service.friendRequestService.FriendRequestService;
 import ru.practicum.users.dto.UserShortDto;
 import ru.practicum.users.service.UserService;
 

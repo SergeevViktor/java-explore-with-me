@@ -1,4 +1,4 @@
-package ru.practicum.request.service.requestService;
+package ru.practicum.request.service.friendRequestService;
 
 import ru.practicum.request.dto.friendRequestDto.FriendRequestDto;
 import ru.practicum.request.dto.friendRequestDto.UpdateFriendRequestDto;
