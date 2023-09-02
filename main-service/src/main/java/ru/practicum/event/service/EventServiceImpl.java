@@ -18,6 +18,7 @@ import ru.practicum.event.repository.EventRepository;
 import ru.practicum.event.repository.LocationRepository;
 import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.ObjectNotFoundException;
+import ru.practicum.exception.ValidationException;
 import ru.practicum.request.repository.RequestRepository;
 import ru.practicum.request.dto.RequestDto;
 import ru.practicum.request.dto.RequestMapper;
@@ -27,7 +28,6 @@ import ru.practicum.users.model.User;
 import ru.practicum.users.repository.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
