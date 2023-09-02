@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.event.dto.*;
 import ru.practicum.event.service.EventService;
-import ru.practicum.request.dto.ParticipationRequestDto;
+import ru.practicum.request.dto.RequestDto;
 
 import javax.validation.Valid;
 import javax.validation.constraints.PositiveOrZero;
@@ -51,8 +51,8 @@ public class PrivateEventController {
     }
 
     @GetMapping("/{eventId}/requests")
-    public ResponseEntity<List<ParticipationRequestDto>> getRequestUserEvents(@PathVariable Long userId,
-                                                              @PathVariable Long eventId) {
+    public ResponseEntity<List<RequestDto>> getRequestUserEvents(@PathVariable Long userId,
+                                                                 @PathVariable Long eventId) {
         return ResponseEntity.ok().body(eventService.getRequestUserEvents(userId, eventId));
     }
 

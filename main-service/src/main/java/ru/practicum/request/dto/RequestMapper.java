@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 
 @UtilityClass
 public class RequestMapper {
-    public static ParticipationRequestDto toRequestDto(Request request) {
-        return ParticipationRequestDto.builder()
+    public static RequestDto toRequestDto(Request request) {
+        return RequestDto.builder()
                 .id(request.getId())
                 .created(request.getCreated())
                 .status(request.getStatus())

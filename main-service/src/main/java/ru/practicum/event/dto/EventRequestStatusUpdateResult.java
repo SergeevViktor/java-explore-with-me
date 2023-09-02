@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Value;
-import ru.practicum.request.dto.ParticipationRequestDto;
+import ru.practicum.request.dto.RequestDto;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class EventRequestStatusUpdateResult {
-    private List<ParticipationRequestDto> confirmedRequests;
-    private List<ParticipationRequestDto> rejectedRequests;
+    private List<RequestDto> confirmedRequests;
+    private List<RequestDto> rejectedRequests;
 
 
 }

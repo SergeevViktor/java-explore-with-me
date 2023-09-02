@@ -19,9 +19,9 @@ import ru.practicum.event.repository.LocationRepository;
 import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.ObjectNotFoundException;
 import ru.practicum.request.repository.RequestRepository;
-import ru.practicum.request.dto.ParticipationRequestDto;
+import ru.practicum.request.dto.RequestDto;
 import ru.practicum.request.dto.RequestMapper;
-import ru.practicum.request.model.ParticipationRequestStatus;
+import ru.practicum.request.model.RequestStatus;
 import ru.practicum.request.model.Request;
 import ru.practicum.users.model.User;
 import ru.practicum.users.repository.UserRepository;
@@ -81,7 +81,7 @@ public class EventServiceImpl implements EventService {
 
             for (EventShortDto event : result) {
                 event.setConfirmedRequests(requestRepository.countAllByEventIdAndStatus(event.getId(),
-                        ParticipationRequestStatus.CONFIRMED));
+                        RequestStatus.CONFIRMED));
             }
         }
 
@@ -111,7 +111,7 @@ public class EventServiceImpl implements EventService {
         statsClient.saveHit("/events/" + eventId, ip);
         statsClient.setViewsNumber(eventFullDto);
         eventFullDto.setConfirmedRequests(requestRepository.countAllByEventIdAndStatus(event.getId(),
-                ParticipationRequestStatus.CONFIRMED));
+                RequestStatus.CONFIRMED));
 
         return eventFullDto;
     }
@@ -176,13 +176,13 @@ public class EventServiceImpl implements EventService {
         Event toUpdate = eventRepository.save(event);
         EventFullDto eventFullDto = EventMapper.toEventFullDto(toUpdate);
         eventFullDto.setConfirmedRequests(requestRepository.countAllByEventIdAndStatus(event.getId(),
-                ParticipationRequestStatus.CONFIRMED));
+                RequestStatus.CONFIRMED));
         statsClient.setViewsNumber(eventFullDto);
         return eventFullDto;
     }
 
     @Override
-    public List<ParticipationRequestDto> getRequestUserEvents(Long userId, Long eventId) {
+    public List<RequestDto> getRequestUserEvents(Long userId, Long eventId) {
         User user = getUser(userId);
         Event event = getEvents(eventId);
 
@@ -207,7 +207,7 @@ public class EventServiceImpl implements EventService {
             throw new ConflictException("Не требуется модерация и подтверждения заявок");
         }
 
-        Long confirmedRequests = requestRepository.countAllByEventIdAndStatus(eventId, ParticipationRequestStatus.CONFIRMED);
+        Long confirmedRequests = requestRepository.countAllByEventIdAndStatus(eventId, RequestStatus.CONFIRMED);
         if (event.getParticipantLimit() != 0 && event.getParticipantLimit() <= (confirmedRequests)) {
             throw new ConflictException("Нельзя подтвердить заявку, если уже достигнут лимит по заявкам на данное событие!");
         }
@@ -217,7 +217,7 @@ public class EventServiceImpl implements EventService {
 
         for (Request request : requestsToUpdate) {
 
-            if (!request.getStatus().equals(ParticipationRequestStatus.PENDING)) {
+            if (!request.getStatus().equals(RequestStatus.PENDING)) {
                 continue;
             }
 
@@ -228,16 +228,16 @@ public class EventServiceImpl implements EventService {
             }
             if (requestStatusUpdate.getStatus().equals("CONFIRMED")) {
                 if (confirmedRequests < event.getParticipantLimit()) {
-                    request.setStatus(ParticipationRequestStatus.CONFIRMED);
+                    request.setStatus(RequestStatus.CONFIRMED);
                     confirmedRequests++;
                     confirmed.add(request);
                 } else {
-                    request.setStatus(ParticipationRequestStatus.REJECTED);
+                    request.setStatus(RequestStatus.REJECTED);
                     rejected.add(request);
                 }
 
             } else {
-                request.setStatus(ParticipationRequestStatus.REJECTED);
+                request.setStatus(RequestStatus.REJECTED);
                 rejected.add(request);
             }
         }
@@ -315,10 +315,40 @@ public class EventServiceImpl implements EventService {
         Event toUpdate = eventRepository.save(event);
         EventFullDto eventFullDto = EventMapper.toEventFullDto(toUpdate);
         eventFullDto.setConfirmedRequests(requestRepository.countAllByEventIdAndStatus(event.getId(),
-                ParticipationRequestStatus.CONFIRMED));
+                RequestStatus.CONFIRMED));
         statsClient.setViewsNumber(eventFullDto);
         return eventFullDto;
     }
+
+    @Override
+    public List<EventShortDto> getEventsWithUserFriendsInParticipants(Long userId, HttpServletRequest request,
+                                                                      Integer from, Integer size) {
+        String ip = request.getRemoteAddr();
+        int offset = from > 0 ? from / size : 0;
+        PageRequest page = PageRequest.of(offset, size);
+        List<Event> events = eventRepository.findAllWithUserFriendsInParticipants(userId, page);
+        List<EventShortDto> result = events
+                .stream()
+                .map(EventMapper::mapToShortDto)
+                .collect(Collectors.toList());
+        if (result.size() > 0) {
+            statsClient.setViewsNumber(result);
+
+            for (EventShortDto event : result) {
+                event.setConfirmedRequests(requestRepository.countAllByEventIdAndStatus(event.getId(),
+                        RequestStatus.CONFIRMED));
+            }
+        }
+        if (result.size() > 0) {
+            for (EventShortDto event : result) {
+                statsClient.saveHit("/events/" + event.getId(), ip);
+            }
+        } else {
+            return new ArrayList<EventShortDto>();
+        }
+        return result;
+    }
+
 
     private void updateEvents(Event event, UpdateEventRequestDto requestDto) {
         if (requestDto.getAnnotation() != null) {

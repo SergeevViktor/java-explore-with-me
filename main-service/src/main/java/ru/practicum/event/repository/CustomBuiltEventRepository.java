@@ -6,7 +6,7 @@ import ru.practicum.event.dto.Criteria;
 import ru.practicum.event.dto.CriteriaPublic;
 import ru.practicum.event.model.State;
 import ru.practicum.event.model.Event;
-import ru.practicum.request.model.ParticipationRequestStatus;
+import ru.practicum.request.model.RequestStatus;
 import ru.practicum.request.model.Request;
 
 import javax.persistence.EntityManager;
@@ -106,7 +106,7 @@ public class CustomBuiltEventRepository {
             Join<Request, Event> subParticipation = subRoot.join("event");
             sub.select(builder.count(subRoot.get("event")));
             sub.where(builder.equal(root.get("id"), subParticipation.get("id")));
-            sub.where(builder.equal(subRoot.get("status"), ParticipationRequestStatus.CONFIRMED));
+            sub.where(builder.equal(subRoot.get("status"), RequestStatus.CONFIRMED));
             Predicate onlyAvailable = builder.greaterThan(root.get("participantLimit"), sub);
 
             predicates.add(onlyAvailable);

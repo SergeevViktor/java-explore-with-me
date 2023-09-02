@@ -1,4 +1,4 @@
-package ru.practicum.request.service;
+package ru.practicum.request.service.friendRequestService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,9 +9,9 @@ import ru.practicum.event.repository.EventRepository;
 import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.ObjectNotFoundException;
 import ru.practicum.request.repository.RequestRepository;
-import ru.practicum.request.dto.ParticipationRequestDto;
+import ru.practicum.request.dto.RequestDto;
 import ru.practicum.request.dto.RequestMapper;
-import ru.practicum.request.model.ParticipationRequestStatus;
+import ru.practicum.request.model.RequestStatus;
 import ru.practicum.request.model.Request;
 import ru.practicum.users.model.User;
 import ru.practicum.users.repository.UserRepository;
@@ -29,7 +29,7 @@ public class RequestServiceImpl implements RequestService {
     private final EventRepository eventRepository;
 
     @Override
-    public List<ParticipationRequestDto> getRequest(Long userId) {
+    public List<RequestDto> getRequest(Long userId) {
         getUserById(userId);
         List<Request> requestsList = requestsRepository.findByRequesterId(userId);
         log.info("Запрос GET на поиск о заявках текущего пользователя, с ids: {}", userId);
@@ -44,10 +44,10 @@ public class RequestServiceImpl implements RequestService {
     если для события отключена пре-модерация запросов на участие, то запрос должен автоматически перейти в состояние подтвержденного
      */
     @Override
-    public ParticipationRequestDto createRequest(Long userId, Long eventId) {
+    public RequestDto createRequest(Long userId, Long eventId) {
         User user = getUserById(userId);
         Event event = getEventsById(eventId);
-        Long confirmedRequestAmount = requestsRepository.countAllByEventIdAndStatus(eventId, ParticipationRequestStatus.CONFIRMED);
+        Long confirmedRequestAmount = requestsRepository.countAllByEventIdAndStatus(eventId, RequestStatus.CONFIRMED);
         // выбирает из Request, где поле `event.id` равно заданному `eventId` и поле `status` равно "CONFIRMED"
         if (user.getId().equals(event.getInitiator().getId())) {
             throw new ConflictException("инициатор события не может добавить запрос на участие в своём событии");
@@ -68,9 +68,9 @@ public class RequestServiceImpl implements RequestService {
                 .created(LocalDateTime.now())
                 .build();
         if (!event.getRequestModeration() || event.getParticipantLimit() == 0) { // нужна ли модерация на участие
-            request.setStatus(ParticipationRequestStatus.CONFIRMED);
+            request.setStatus(RequestStatus.CONFIRMED);
         } else {
-            request.setStatus(ParticipationRequestStatus.PENDING);
+            request.setStatus(RequestStatus.PENDING);
         }
         log.info("Запрос create на добавление запроса от текущего пользователя на участие в событии, с ids: {}", userId);
 
@@ -78,13 +78,13 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public ParticipationRequestDto cancelRequest(Long userId, Long requestId) {
+    public RequestDto cancelRequest(Long userId, Long requestId) {
         getUserById(userId);
         Request request = getRequestById(requestId);
         if (!userId.equals(request.getRequester().getId())) {
             throw new ConflictException("Можно отменить только свой запрос на участие!");
         }
-        request.setStatus(ParticipationRequestStatus.CANCELED);
+        request.setStatus(RequestStatus.CANCELED);
         log.info("Запрос PATH на отмену своего запроса на участие в событии, с ids: {} {}", userId, requestId);
         return RequestMapper.toRequestDto(requestsRepository.save(request));
     }
