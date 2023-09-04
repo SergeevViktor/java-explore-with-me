@@ -21,57 +21,57 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/users/{userId}/friends")
+@RequestMapping
 @RequiredArgsConstructor
 @Validated
 @Slf4j
-public class PrivateFriendRequestController {
+public class SubscriptionsController {
     private final FriendRequestService friendRequestService;
     private final EventService eventService;
     private final UserService userService;
 
-    @PostMapping("/{friendId}")
+    @PostMapping("/subscriptions/{userId}/{friendId}")
     public ResponseEntity<FriendRequestDto> createFriendRequest(@PathVariable Long userId,
                                                                 @PathVariable Long friendId) {
-        URI uri = URI.create("http://localhost:8080/users/" + userId + "/friends/" + friendId);
+        URI uri = URI.create("http://localhost:8080/subscriptions/" + userId + "/" + friendId);
         log.info("Поступила заявка от пользователя с id {} на добавление в друзья пользователя с id {} ",
                 userId, friendId);
         return ResponseEntity.created(uri).body(friendRequestService.createFriendRequest(userId, friendId));
     }
 
-    @GetMapping("/requests/incoming")
+    @GetMapping("/subscribers/{userId}")
     public ResponseEntity<List<FriendRequestDto>> getAllIncomingFriendRequests(@PathVariable Long userId) {
         log.info("Поступил запрос от пользователя с id {} на получение его входящих заявок в друзья", userId);
         return ResponseEntity.ok().body(friendRequestService.getAllIncomingFriendRequests(userId));
     }
 
-    @GetMapping("/requests/outgoing")
+    @GetMapping("/subscriptions/{userId}")
     public ResponseEntity<List<FriendRequestDto>> getAllOutgoingFriendRequests(@PathVariable Long userId) {
         log.info("Поступил запрос от пользователя с id {} на получение его исходящих заявок в друзья", userId);
         return ResponseEntity.ok().body(friendRequestService.getAllOutgoingFriendRequests(userId));
     }
 
-    @GetMapping
+    @GetMapping("/subscriptions/my/{userId}")
     public ResponseEntity<List<UserShortDto>> getUserFriends(@PathVariable Long userId) {
         log.info("Поступил запрос от пользователя с id {} на получение списка его друзей", userId);
         return ResponseEntity.ok().body(userService.getUserFriends(userId));
     }
 
-    @PatchMapping("/requests/incoming")
+    @PatchMapping("/subscribers/{userId}")
     public ResponseEntity<List<FriendRequestDto>> updateIncomingFriendRequestsStatus(@PathVariable Long userId,
                                                                      @Valid @RequestBody UpdateFriendRequestDto requestDto) {
         log.info("Поступил запрос на обновление статуса входящих заявок в друзья от пользователя с id={}", userId);
         return ResponseEntity.ok().body(friendRequestService.updateIncomingFriendRequestsStatus(userId, requestDto));
     }
 
-    @PatchMapping("/requests/outgoing")
+    @PatchMapping("/subscriptions/{userId}")
     public ResponseEntity<List<FriendRequestDto>> updateOutgoingFriendRequestsStatus(@PathVariable Long userId,
                                                                      @Valid @RequestBody UpdateFriendRequestDto requestDto) {
         log.info("Поступил запрос на обновление статуса исходящих заявок в друзья от пользователя с id={}", userId);
         return ResponseEntity.ok().body(friendRequestService.updateOutgoingFriendRequestsStatus(userId, requestDto));
     }
 
-    @PatchMapping("/{friendId}/reject")
+    @DeleteMapping("/subscriptions/{userId}/{friendId}")
     public ResponseEntity<List<UserShortDto>> removeFriendFromUserFriends(@PathVariable Long userId,
                                                           @PathVariable Long friendId) {
         log.info("Поступил запрос на отклонение подтвержденной заявки в друзья между пользователями с id={} и id={}",
@@ -79,7 +79,7 @@ public class PrivateFriendRequestController {
         return ResponseEntity.ok().body(userService.removeFriendFromUserFriends(userId, friendId));
     }
 
-    @GetMapping("/events")
+    @GetMapping("/subscriptions/events/{userId}")
     public ResponseEntity<List<EventShortDto>> getEventsWithUserFriendsInParticipants(@PathVariable Long userId,
                                                                       HttpServletRequest request,
                                                                       @RequestParam(defaultValue = "0")
