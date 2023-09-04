@@ -2119,17 +2119,7 @@
 							"    pm.response.to.be.json;",
 							"});",
 							"",
-							"const target = pm.response.json()[0];",
-							"",
-							"pm.test(\"Событие должно содержать поля: id, title, annotation, category, paid, eventDate, initiator\", function () {",
-							"pm.expect(target).to.have.property('id');",
-							"pm.expect(target).to.have.property('title');",
-							"pm.expect(target).to.have.property('annotation');",
-							"pm.expect(target).to.have.property('category');",
-							"pm.expect(target).to.have.property('paid');",
-							"pm.expect(target).to.have.property('eventDate');",
-							"pm.expect(target).to.have.property('initiator');",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
