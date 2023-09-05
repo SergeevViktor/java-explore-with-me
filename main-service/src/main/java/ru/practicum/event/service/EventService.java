@@ -3,7 +3,7 @@ package ru.practicum.event.service;
 import ru.practicum.event.dto.*;
 import ru.practicum.event.model.SortEvents;
 import ru.practicum.event.model.State;
-import ru.practicum.request.dto.ParticipationRequestDto;
+import ru.practicum.request.dto.RequestDto;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -22,11 +22,13 @@ public interface EventService {
 
     EventFullDto updateEventsByUser(Long userId, Long eventId, UpdateEventRequestDto requestDto);
 
-    List<ParticipationRequestDto> getRequestUserEvents(Long userId, Long eventId);
+    List<RequestDto> getRequestUserEvents(Long userId, Long eventId);
 
     EventRequestStatusUpdateResult updateStatusRequestByUserIdForEvents(Long userId, Long eventId, EventRequestStatusUpdateRequest requestDto);
 
     List<EventFullDto> adminGetEvents(List<Long> userIds, List<State> states, List<Long> categories, String rangeStart, String rangeEnd, Integer from, Integer size);
 
     EventFullDto adminUpdateEvent(Long eventId, UpdateEventRequestDto requestDto);
+
+    List<EventShortDto> getEventsWithUserFriendsInParticipants(Long userId, HttpServletRequest request, Integer from, Integer size);
 }

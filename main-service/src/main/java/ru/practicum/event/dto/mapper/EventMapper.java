@@ -10,7 +10,7 @@ import ru.practicum.categories.model.Category;
 import ru.practicum.event.model.Event;
 import ru.practicum.event.model.Location;
 import ru.practicum.event.model.State;
-import ru.practicum.request.model.ParticipationRequestStatus;
+import ru.practicum.request.model.RequestStatus;
 import ru.practicum.users.dto.UserDto;
 import ru.practicum.users.dto.UserMapper;
 import ru.practicum.users.model.User;
@@ -40,7 +40,7 @@ public class EventMapper {
                 .build();
         if (event.getParticipationRequests() != null && !event.getParticipationRequests().isEmpty()) {
             eventFullDto.setConfirmedRequests(event.getParticipationRequests().stream()
-                    .filter(participationRequest -> participationRequest.getStatus() == ParticipationRequestStatus.CONFIRMED)
+                    .filter(participationRequest -> participationRequest.getStatus() == RequestStatus.CONFIRMED)
                     .count());
         } else eventFullDto.setConfirmedRequests(0L);
         return eventFullDto;

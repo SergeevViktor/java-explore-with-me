@@ -31,7 +31,7 @@ public class Request {
      */
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private ParticipationRequestStatus status;
+    private RequestStatus status;
 
     @ManyToOne
     @JoinColumn(name = "requester_id", nullable = false)
